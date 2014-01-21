@@ -47,22 +47,20 @@ class TestList < Test::Unit::TestCase
   end  
   
   def test_find_value
-    assert(!@list.find_value(4), 'Should return nil for empty list')
+    assert(!@list.find_value(4))
     assert(@list.find_value(34))
-  end
-  
-  def test_find_node
+
     list = @sorted_list.dup
     node = list.insert_sorted(6)
-    assert_equal(node, list.find_node(6))
-    assert_equal(nil, list.find_node(1000))
-  end  
+    assert_equal(node, list.find_value(6))
+    assert_equal(nil, list.find_value(1000))
+  end
   
   def test_remove_node
     list = @sorted_list.dup
     list.insert_sorted(6)
-    node = list.find_node(6)
-    assert(list.find_value(6))
+    node = list.find_value(6)
+    assert(node)
     list.remove(node)
     assert(!list.find_value(6))
     assert_equal(@sorted_list.to_a, list.to_a)

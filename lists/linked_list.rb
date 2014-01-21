@@ -24,16 +24,17 @@ module List
       end
     end
     
+    # Return an array of Node data
     def to_a
-      return collect() { |node| node.data }
+      collect { |node| node.data }
     end
     
-    # Insert node at the head of the list.
+    # Insert Node at the head of the list.
     def insert(data)
       @head = Node.new(data, head)
     end
     
-    # Insert node in order into the list. 
+    # Insert Node in order into the list. 
     def insert_sorted(data)
       if (!@head || data <= @head.data)
         return insert(data)
@@ -45,28 +46,19 @@ module List
       current.next = Node.new(data, current.next)
     end  
     
-    # Find an element in the list
+    # Find an element in the list.
+    # Return reference to Node or nil
     def find_value(value)
-      return find() do |item|
+      find do |item|
         item.data == value
       end
     end
     
-    # Find a node in the list containing data of value, else nil.
-    def find_node(value) 
-      current = @head
-      while (current) 
-        return current if current.data == value
-        current = current.next
-      end
-      nil
-    end
-    
-    # Remove a node from the list
+    # Remove a Node from the list
     def remove(target)
       return nil if target == nil || @head == nil
       @head = @head.next if @head == target
-      prev_node = find() do |item|
+      prev_node = find do |item|
         item.next == target
       end
       prev_node.next = prev_node.next.next if prev_node
