@@ -1,4 +1,3 @@
-
 module List
   
   class List
@@ -54,9 +53,7 @@ module List
       end
       current.next = Node.new(data, current.next)
     end  
-    
-
-    
+   
     # Remove a Node from the list
     def remove(target)
       return nil if target == nil || @head == nil
@@ -89,10 +86,6 @@ module List
         @head.next = new_node
         @head.data, new_node.data = new_node.data, @head.data
       end
-    end
-    
-    def find_value(value)
-      find { |item| item.data == value }
     end
     
     def remove(target)
