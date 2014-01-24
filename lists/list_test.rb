@@ -28,7 +28,7 @@ class TestList < Test::Unit::TestCase
     @clist.insert(5)
     
   end
-  
+  #TODO: Refactor duplicated code from tests!
   def test_new_list
     ll = List::LinkedList.new
     assert_equal(nil, ll.head, "Head should be nil for a new list")
@@ -84,6 +84,24 @@ class TestList < Test::Unit::TestCase
     list.insert(1)
     assert_equal(2, list.count)
     assert_equal([1,3], list.to_a)
+  end
+  
+  def test_clist_remove_node
+    list = @clist.dup
+    list.insert(6)
+    node = list.find_value(6)
+    assert(node)
+    list.remove(node)
+    assert(!list.find_value(6))
+    assert_equal(@clist.to_a, list.to_a)
+  end
+  
+  def test_remove_empty
+    list = List::CircularList.new
+    assert_equal(nil, list.remove(nil))
+    assert_equal(nil, list.remove(List::Node.new(5)))
+    node = list.insert(44)
+    list.remove(node)
   end
   
 end
