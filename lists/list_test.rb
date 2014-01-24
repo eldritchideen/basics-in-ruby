@@ -4,7 +4,7 @@ require 'bundler/setup'
 require 'simplecov'
 SimpleCov.start
 
-require_relative 'linked_list'
+require_relative 'list'
 require 'test/unit'
 
 class TestList < Test::Unit::TestCase
@@ -20,6 +20,12 @@ class TestList < Test::Unit::TestCase
     @list.insert(34)
     @list.insert(3)    
     @list.insert(5)
+    
+    @clist = List::CircularList.new
+    @clist.insert(1)
+    @clist.insert(34)
+    @clist.insert(3)    
+    @clist.insert(5)
     
   end
   
@@ -70,6 +76,14 @@ class TestList < Test::Unit::TestCase
     list = List::LinkedList.new
     assert_equal(nil, list.remove(nil))
     assert_equal(nil, list.remove(List::Node.new(5)))
+  end
+  
+  def test_circular_list_insert
+    list = List::CircularList.new
+    list.insert(3)
+    list.insert(1)
+    assert_equal(2, list.count)
+    assert_equal([1,3], list.to_a)
   end
   
 end

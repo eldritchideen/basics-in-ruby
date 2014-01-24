@@ -1,6 +1,23 @@
 
 module List
   
+  class List
+    include Enumerable
+    
+    attr_accessor :head
+    
+    # Find an element in the list.
+    # Return reference to Node or nil
+    def find_value(value) 
+      find { |item| item.data == value }
+    end
+    
+    # Return an array of Node data
+    def to_a
+      collect { |node| node.data }
+    end
+  end
+  
   class Node
     attr_accessor :data
     attr_accessor :next
@@ -11,22 +28,14 @@ module List
     end
   end
   
-  class LinkedList
-    include Enumerable
+  class LinkedList < List
     
-    attr_accessor :head
-    
-    def each()
+    def each
       item = @head
       while(item)
         yield item
         item = item.next
       end
-    end
-    
-    # Return an array of Node data
-    def to_a
-      collect { |node| node.data }
     end
     
     # Insert Node at the head of the list.
@@ -46,13 +55,7 @@ module List
       current.next = Node.new(data, current.next)
     end  
     
-    # Find an element in the list.
-    # Return reference to Node or nil
-    def find_value(value)
-      find do |item|
-        item.data == value
-      end
-    end
+
     
     # Remove a Node from the list
     def remove(target)
@@ -63,6 +66,47 @@ module List
       end
       prev_node.next = prev_node.next.next if prev_node
     end
+  end
+  
+  class CircularList < List
+    
+    def each
+      item = @head
+      while(item)
+        yield item
+        item = item.next
+        break if item == @head
+      end
+    end
+    
+    def insert(data)
+      new_node = Node.new(data)
+      if !@head
+        new_node.next = new_node
+        @head = new_node
+      else
+        new_node.next = @head.next
+        @head.next = new_node
+        @head.data, new_node.data = new_node.data, @head.data
+      end
+    end
+    
+    def find_value(value)
+      find { |item| item.data == value }
+    end
+    
+    def remove(target)
+      if !@head || @head == @head.next
+        @head = nil
+        return
+      end
+      next_node = target.next
+      target.data = next_node.data
+      target.next = next_node.next
+      if @head == next_node
+        @head = target
+      end
+    end    
   end
 end
 
