@@ -3,7 +3,7 @@ module List
   class List
     include Enumerable
     
-    attr_accessor :head
+    attr_reader :head
     
     # Find an element in the list.
     # Return reference to Node or nil
@@ -14,6 +14,19 @@ module List
     # Return an array of Node data
     def to_a
       collect { |node| node.data }
+    end
+
+    def mid
+      trailing = @head
+      index = @head
+      while index
+        index = index.next
+        if index
+          index = index.next
+          trailing = trailing.next
+        end
+      end
+      trailing
     end
   end
   
@@ -26,6 +39,16 @@ module List
       @next = next_node
     end
   end
+
+  class DllNode < Node
+    attr_accessor :prev
+
+    def initialize(data, next_node=nil, prev_node=nil)
+      super(data, next_node)
+      @prev = prev_node
+    end
+  end
+
   
   class LinkedList < List
     
@@ -100,6 +123,42 @@ module List
         @head = target
       end
     end    
+  end
+
+  class DoubleLinkedList < List
+
+    def each
+      item = @head
+      while(item)
+        yield item
+        item = item.next
+        break if item == @head
+      end
+    end
+
+    def insert(data)
+      if !@head
+        @head = DllNode.new(data)
+        @head.prev = @head.next = @head
+      else
+        node = DllNode.new(data, @head.prev, @head)
+        @head.prev.next = node
+        @head.prev = node
+        @head = node
+      end
+    end
+
+    def remove(target)
+      if @head == @head.next
+        @head = nil
+      else
+        target.prev.next = target.next
+        target.next.prev = target.prev
+        @head = @head.next if @head == target
+      end
+    end
+    
+    
   end
 end
 

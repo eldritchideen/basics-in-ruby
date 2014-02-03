@@ -50,7 +50,11 @@ class TestList < Test::Unit::TestCase
   
   def test_sorted_insert
     assert_equal([1,2,3], @sorted_list.to_a)
-  end  
+  end
+
+  def test_mid
+    assert_equal(2, @sorted_list.mid.data)
+  end
   
   def test_find_value
     assert(!@list.find_value(4))
